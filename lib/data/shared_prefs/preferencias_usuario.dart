@@ -16,12 +16,12 @@ class PreferenciasUsuario {
     _prefs = await SharedPreferences.getInstance();
   }
 
-  get colorSecundario {
-    return _prefs.getBool('colorSecundario') ?? false;
+  get themeDark {
+    return _prefs.getBool('themeDark') ?? false;
   }
 
-  set colorSecundario(bool value) {
-    _prefs.setBool('colorSecundario', value);
+  set themeDark(bool value) {
+    _prefs.setBool('themeDark', value);
   }
 
   get login {

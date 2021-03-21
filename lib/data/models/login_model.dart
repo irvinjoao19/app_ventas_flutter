@@ -1,77 +1,85 @@
 // To parse this JSON data, do
 //
-//     final loginModel = loginModelFromJson(jsonString);
+//     final usuario = usuarioFromJson(jsonString);
 
 import 'dart:convert';
 
-LoginModel loginModelFromJson(String str) => LoginModel.fromJson(json.decode(str));
+Usuario usuarioFromJson(String str) => Usuario.fromJson(json.decode(str));
 
-String loginModelToJson(LoginModel data) => json.encode(data.toJson());
-
-class LoginModel {
-    LoginModel({
-        this.response,
-        this.data,
-    });
-
-    Response response;
-    Usuario data;
-
-    factory LoginModel.fromJson(Map<String, dynamic> json) => LoginModel(
-        response: Response.fromJson(json["response"]),
-        data: Usuario.fromJson(json["data"]),
-    );
-
-    Map<String, dynamic> toJson() => {
-        "response": response.toJson(),
-        "data": data.toJson(),
-    };
-}
+String usuarioToJson(Usuario data) => json.encode(data.toJson());
 
 class Usuario {
-    Usuario({
-        this.usuarioId,
-        this.usuario,
-        this.token,
-    });
+  Usuario({
+    this.usuarioId,
+    this.documento,
+    this.apellidos,
+    this.nombres,
+    this.tipo,
+    this.cargoId,
+    this.nombreCargo,
+    this.telefono,
+    this.email,
+    this.login,
+    this.pass,
+    this.envioOnline,
+    this.perfil,
+    this.descripcionPerfil,
+    this.estado,
+    this.localId,
+  });
 
-    int usuarioId;
-    String usuario;
-    String token;
+  int usuarioId;
+  String documento;
+  String apellidos;
+  String nombres;
+  int tipo;
+  int cargoId;
+  String nombreCargo;
+  String telefono;
+  String email;
+  String login;
+  String pass;
+  String envioOnline;
+  int perfil;
+  String descripcionPerfil;
+  int estado;
+  int localId;
 
-    factory Usuario.fromJson(Map<String, dynamic> json) => Usuario(
+  factory Usuario.fromJson(Map<String, dynamic> json) => Usuario(
         usuarioId: json["usuarioId"],
-        usuario: json["usuario"],
-        token: json["token"],
-    );
+        documento: json["documento"],
+        apellidos: json["apellidos"],
+        nombres: json["nombres"],
+        tipo: json["tipo"],
+        cargoId: json["cargoId"],
+        nombreCargo: json["nombreCargo"],
+        telefono: json["telefono"],
+        email: json["email"],
+        login: json["login"],
+        pass: json["pass"],
+        envioOnline: json["envioOnline"],
+        perfil: json["perfil"],
+        descripcionPerfil: json["descripcionPerfil"],
+        estado: json["estado"],
+        localId: json["localId"],
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "usuarioId": usuarioId,
-        "usuario": usuario,
-        "token": token,
-    };
-}
-
-class Response {
-    Response({
-        this.codigo,
-        this.descripcion,
-        this.comentario,
-    });
-
-    String codigo;
-    String descripcion;
-    String comentario;
-
-    factory Response.fromJson(Map<String, dynamic> json) => Response(
-        codigo: json["codigo"],
-        descripcion: json["descripcion"],
-        comentario: json["comentario"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "codigo": codigo,
-        "descripcion": descripcion,
-        "comentario": comentario,
-    };
+        "documento": documento,
+        "apellidos": apellidos,
+        "nombres": nombres,
+        "tipo": tipo,
+        "cargoId": cargoId,
+        "nombreCargo": nombreCargo,
+        "telefono": telefono,
+        "email": email,
+        "login": login,
+        "pass": pass,
+        "envioOnline": envioOnline,
+        "perfil": perfil,
+        "descripcionPerfil": descripcionPerfil,
+        "estado": estado,
+        "localId": localId,
+      };
 }

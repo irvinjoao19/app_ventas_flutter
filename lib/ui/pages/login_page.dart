@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:app_amsys/src/bloc/login_bloc.dart';
-import 'package:app_amsys/src/providers/usuario_provider.dart';
-import 'package:app_amsys/src/utils/utils.dart';
+import 'package:app_ventas/constants.dart';
+import 'package:app_ventas/data/bloc/login_bloc.dart';
+import 'package:app_ventas/data/repository/usuario_provider.dart';
+import 'package:app_ventas/helper/utils.dart';
+
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatelessWidget {
@@ -15,6 +17,42 @@ class LoginPage extends StatelessWidget {
           _loginForm(context),
         ],
       ),
+    );
+  }
+
+  Widget _crearFondo(context) {
+    final circulo = Container(
+      width: 100.0,
+      height: 100.0,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(100.0), color: kPrimaryColor),
+    );
+
+    return Stack(
+      children: [
+        Positioned(top: 90.0, left: 30.0, child: circulo),
+        Positioned(top: -40.0, right: -30.0, child: circulo),
+        Positioned(bottom: -50.0, right: -10.0, child: circulo),
+        Positioned(bottom: 120.0, right: 20.0, child: circulo),
+        Positioned(bottom: -50.0, left: -20.0, child: circulo),
+        Container(
+          padding: EdgeInsets.only(top: 50.0),
+          child: Column(
+            children: [
+              Container(
+                margin: EdgeInsets.all(35.0),
+                child: Text('App Ventas',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline5
+                        .copyWith(fontSize: 40, fontWeight: FontWeight.bold)),
+              ),
+              SizedBox(height: 10.0, width: double.infinity)
+            ],
+          ),
+        )
+      ],
     );
   }
 
@@ -32,7 +70,7 @@ class LoginPage extends StatelessWidget {
             margin: EdgeInsets.symmetric(vertical: 10.0),
             padding: EdgeInsets.symmetric(vertical: 50.0),
             decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).scaffoldBackgroundColor,
                 borderRadius: BorderRadius.circular(5.0),
                 boxShadow: [
                   BoxShadow(
@@ -43,9 +81,12 @@ class LoginPage extends StatelessWidget {
                 ]),
             child: Column(
               children: [
-                Text('DATA ACQUISITION\n INTERFACE',
+                Text('V 1.0',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 20.0)),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline5
+                        .copyWith(fontWeight: FontWeight.bold)),
                 _crearEmail(bloc),
                 SizedBox(
                   height: 20.0,
@@ -78,7 +119,11 @@ class LoginPage extends StatelessWidget {
             child: TextField(
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
-                  icon: Icon(Icons.account_circle, color: Colors.blue),
+                  icon: Icon(Icons.account_circle,
+                      color: MediaQuery.of(context).platformBrightness ==
+                              Brightness.light
+                          ? Colors.black
+                          : kPrimaryColor),
                   //hintText: 'ejemplo@correo.com',
                   labelText: 'Ingrese usuario',
                   counterText: snapshot.data,
@@ -99,7 +144,11 @@ class LoginPage extends StatelessWidget {
             keyboardType: TextInputType.visiblePassword,
             obscureText: true,
             decoration: InputDecoration(
-                icon: Icon(Icons.lock_outline, color: Colors.blue),
+                icon: Icon(Icons.lock_outline,
+                    color: MediaQuery.of(context).platformBrightness ==
+                            Brightness.light
+                        ? Colors.black
+                        : kPrimaryColor),
                 labelText: 'Contraseña',
                 //  counterText: snapshot.data,
                 errorText: snapshot.error),
@@ -123,8 +172,7 @@ class LoginPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(5.0),
               ),
               elevation: 0.0,
-              color: Colors.blue,
-              textColor: Colors.white,
+              color: kPrimaryColor,
               onPressed: snapshot.hasData
                   ? () => _login(bloc, usuarioProvider, context)
                   : null);
@@ -133,58 +181,43 @@ class LoginPage extends StatelessWidget {
 
   _login(LoginBloc bloc, UsuarioProvider usuarioProvider,
       BuildContext context) async {
-    Map info = await usuarioProvider.login(bloc.email, bloc.password);
+    showDialogLoad(context, "Ingresando...");
 
-    if (info['ok']) {
-      Navigator.pushReplacementNamed(context, 'home');
+    Map login = await usuarioProvider.login(bloc.email, bloc.password);
+
+    if (login['ok']) {
+      Map syncs = await usuarioProvider.sincronizacion();
+
+      if (syncs['ok']) {
+        Navigator.pushReplacementNamed(context, 'home');
+      } else {
+        mostrarAlerta(context, syncs['mensaje']);
+      }
     } else {
-      mostrarAlerta(context, info['mensaje']);
+      mostrarAlerta(context, login['mensaje']);
     }
   }
 
-  Widget _crearFondo(context) {
-    final size = MediaQuery.of(context).size;
-    final fondoMorado = Container(
-      height: size.height * 0.4,
-      width: double.infinity,
-      decoration: BoxDecoration(
-          gradient: LinearGradient(colors: [
-        Color.fromRGBO(242, 242, 242, 2.0),
-        Color.fromRGBO(242, 242, 242, 1.0)
-      ])),
+  showDialogLoad(BuildContext context, String title) {
+    AlertDialog alert = AlertDialog(
+      content: new Row(
+        children: [
+          CircularProgressIndicator(),
+          Container(
+              margin: EdgeInsets.all(10),
+              child: Text(
+                title,
+                textAlign: TextAlign.center,
+              )),
+        ],
+      ),
     );
-
-    final circulo = Container(
-      width: 100.0,
-      height: 100.0,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100.0),
-          color: Color.fromRGBO(255, 255, 255, 0.05)),
-    );
-
-    return Stack(
-      children: [
-        fondoMorado,
-        Positioned(top: 90.0, left: 30.0, child: circulo),
-        Positioned(top: -40.0, right: -30.0, child: circulo),
-        Positioned(bottom: -50.0, right: -10.0, child: circulo),
-        Positioned(bottom: 120.0, right: 20.0, child: circulo),
-        Positioned(bottom: -50.0, left: -20.0, child: circulo),
-        Container(
-          padding: EdgeInsets.only(top: 50.0),
-          child: Column(
-            children: [
-              Container(
-                margin: EdgeInsets.all(25.0),
-                child: Image(
-                  image: AssetImage('assets/images/logo.png'),
-                ),
-              ),
-              SizedBox(height: 10.0, width: double.infinity)
-            ],
-          ),
-        )
-      ],
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:app_ventas/data/repository/usuario_provider.dart';
 import 'package:flutter/material.dart';
 
 bool isNumeric(String s) {
@@ -29,4 +30,42 @@ void mostrarAlerta(BuildContext context, String mensaje) {
 Color colorFromHex(String hexColor) {
   final hexCode = hexColor.replaceAll('#', '');
   return Color(int.parse('FF$hexCode', radix: 16));
+}
+
+void confirmLogout(BuildContext context, UsuarioProvider usuarioProvider) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: Text('Mensaje'),
+        content: Text('Deseas salir del app ?'),
+        actions: [
+          FlatButton(
+            child: Text('NO'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          FlatButton(
+            child: Text('SI'),
+            onPressed: () => _logout(context, usuarioProvider),
+          )
+        ],
+      );
+    },
+  );
+}
+
+_logout(BuildContext context, UsuarioProvider usuarioProvider) async {
+  await usuarioProvider.logout();
+  Navigator.pushReplacementNamed(context, 'login');
+}
+
+bool validarEmail(String email) {
+  Pattern pattern =
+      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+  RegExp regExp = new RegExp(pattern);
+  if (regExp.hasMatch(email)) {
+    return true;
+  } else {
+    return false;
+  }
 }

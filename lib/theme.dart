@@ -1,5 +1,6 @@
-import 'package:chat/constants.dart';
 import 'package:flutter/material.dart';
+
+import 'package:app_ventas/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 // This is our  main focus

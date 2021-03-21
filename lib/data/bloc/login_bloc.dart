@@ -1,6 +1,6 @@
 import 'dart:async';
- 
-import 'package:app_amsys/src/bloc/validator.dart';
+
+import 'package:app_ventas/data/bloc/validator.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
 
