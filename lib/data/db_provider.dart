@@ -22,7 +22,7 @@ class DBProvider {
     final path = join(documentsDirectory.path, 'AppVentas.db');
     print(path);
 
-    return await openDatabase(path, version: 4, onOpen: (db) {},
+    return await openDatabase(path, version: 5, onOpen: (db) {},
         onCreate: (Database db, int version) async {
       await db.execute('''
         CREATE TABLE Usuario(
@@ -125,6 +125,74 @@ class DBProvider {
           precioMayMayor NUMERIC,
           rangoCajaHorizontal NUMERIC,
           rangoCajaMayorista NUMERIC)
+        ''');
+      await db.execute('''
+        CREATE TABLE Pedido(
+          pedidoId INTEGER PRIMARY KEY, 
+          empresaId INTEGER, 
+          numeroPedido TEXT,
+          numeroPedido TEXT,
+          codigoInternoSuministro TEXT,
+          almacenId INTEGER,
+          tipoDocumento INTEGER,
+          puntoVentaId INTEGER,
+          cuadrillaId INTEGER,
+          personalVendedorId INTEGER,
+          formaPagoId INTEGER,
+          monedaId INTEGER,
+          tipoCambio NUMERIC,
+          codigoInternoCliente TEXT,
+          clienteId INTEGER,
+          direccionPedido TEXT,
+          porcentajeIgv NUMERIC,
+          observacion TEXT,
+          latitud TEXT,
+          longitud TEXT,
+          estado INTEGER,
+          subtotal NUMERIC,
+          totalIgv NUMERIC,
+          totalNeto NUMERIC,
+          numeroDocumento TEXT,
+          fechaFacturaPedido TEXT,
+          localId INTEGER,
+          identity INTEGER,
+          nombreCliente TEXT,
+          tipoPersonal INTEGER
+        )
+        ''');
+      await db.execute('''
+        CREATE TABLE PedidoDetalle(
+          pedidoDetalleId INTEGER PRIMARY KEY,
+          pedidoId INTEGER,
+          pedidoItem INTEGER,
+          productoId INTEGER,
+          precioVenta NUMERIC,
+          porcentajeDescuento NUMERIC,
+          descuentoPedido NUMERIC,
+          cantidad NUMERIC,
+          porcentajeIgv NUMERIC,
+          totalPedido NUMERIC,
+          numeroPedido TEXT,
+          identity INTEGER,
+          identityDetalle INTEGER,
+          localId INTEGER,
+          codigo TEXT,
+          nombre TEXT,
+          descripcion TEXT,
+          abreviaturaProducto TEXT,
+          unidadMedida NUMERIC,
+          stockMinimo NUMERIC,
+          subTotal NUMERIC,
+          factor NUMERIC,
+          precio1 NUMERIC,
+          precio2 NUMERIC,
+          precioMayMenor NUMERIC,
+          precioMayMayor NUMERIC,
+          rangoCajaHorizontal NUMERIC,
+          rangoCajaMayorista NUMERIC,
+          estado INTEGER,
+          active INTEGER
+        )
         ''');
     });
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:app_ventas/data/bloc/login_bloc.dart';
@@ -14,6 +15,8 @@ import 'package:app_ventas/ui/pages/home_page.dart';
 import 'package:app_ventas/ui/pages/login_page.dart';
 import 'package:app_ventas/ui/pages/info_client_page.dart';
 import 'package:app_ventas/ui/pages/register_client_page.dart';
+import 'package:app_ventas/ui/pages/orden_page.dart';
+import 'package:app_ventas/ui/pages/stock_productos_page.dart';
 
 import 'package:provider/provider.dart';
 
@@ -55,6 +58,8 @@ class MyApp extends StatelessWidget {
           'home': (BuildContext context) => HomePage(),
           'info': (BuildContext context) => InfoClientPage(),
           'client': (BuildContext context) => RegisterClientPage(),
+          'orden': (BuildContext context) => OrdenPage(),
+          'productos': (BuildContext context) => StockProductosPage(),
         },
       ),
     );

@@ -62,6 +62,12 @@ class _HomePageState extends State<HomePage> {
     lista = [];
 
     switch (pagina) {
+      case 2:
+        lista.add(IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () => goOrdenNew(),
+        ));
+        break;
       case 3:
         lista.add(IconButton(
           icon: Icon(Icons.logout),
@@ -142,5 +148,9 @@ class _HomePageState extends State<HomePage> {
 
   void goClienteNew() {
     Navigator.pushNamed(context, 'client');
+  }
+
+  void goOrdenNew() {
+    Navigator.pushNamed(context, 'orden');
   }
 }
